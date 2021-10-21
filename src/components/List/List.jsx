@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   TaskContainer,
   TasksContent,
@@ -20,11 +19,6 @@ export const List = ({ todo, setTodo }) => {
       saveEditedTodo(id);
     }
   };
-
-  useEffect(() => {
-    //при каждом изменении массива туду при фильтрации рендерим страницу
-    setFilter(todo);
-  }, [todo]); //только при изменении
 
   const filterTodo = (isActive) => {
     if (isActive === "all") {
