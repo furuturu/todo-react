@@ -31,7 +31,7 @@ export const List = ({ todo, setTodo }) => {
 
   const deleteTodo = (id) => {
     const newTodo = [...todo].filter((item) => item.id !== id); //создаем массив-копию без выбранного элемента (перебираемый ид не равен ид от кнопки)
-    setTodo(newTodo); //передаем массив без удаленного туду в стейт
+    setTodo(newTodo);
   };
 
   const statusTodo = (id) => {
@@ -40,14 +40,14 @@ export const List = ({ todo, setTodo }) => {
       if (item.id === id) {
         item.isActive = !item.isActive;
       }
-      return item; //сворачиваем цикл если элемент нашелся
+      return item;
     });
-    setTodo(newTodo); //обновляем стейт
+    setTodo(newTodo);
   };
 
   const editTodo = (id, content) => {
     setEdit(id);
-    setValue(content); //при редактировании контент в вэлью
+    setValue(content);
   };
 
   const saveEditedTodo = (id) => {
@@ -55,9 +55,9 @@ export const List = ({ todo, setTodo }) => {
       if (item.id === id) {
         item.content = value;
       }
-      return item; //выход из цикла
+      return item;
     });
-    setTodo(newTodo); //обновляем стейт
+    setTodo(newTodo);
     setEdit(null); //выход из редактирования
   };
   return (

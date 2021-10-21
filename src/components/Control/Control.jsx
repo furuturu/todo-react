@@ -20,7 +20,7 @@ export const Control = ({ todo, setTodo }) => {
         ]
       );
     }
-    setValue(""); //обнуление инпута
+    setValue("");
   };
 
   const handleSubmit = (e) => {
