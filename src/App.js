@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Title } from "./components/Title/Title";
+import { Control } from "./components/Control/Control";
+import { List } from "./components/List/List";
 
 function App() {
+  const [todo, setTodo] = useState([
+    {
+      id: 1,
+      content: "тест1",
+      isActive: false,
+      date: "21/10/2021, 00:00:00",
+    },
+    {
+      id: 2,
+      content: "тест2",
+      isActive: true,
+      date: "21/10/2021, 00:00:00",
+    },
+    {
+      id: 3,
+      content: "тест3",
+      isActive: true,
+      date: "21/10/2021, 00:00:00",
+    },
+  ]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Title />
+      <Control todo={todo} setTodo={setTodo} />
+      <List todo={todo} setTodo={setTodo} />
     </div>
   );
 }
