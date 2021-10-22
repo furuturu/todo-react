@@ -1,24 +1,19 @@
 import React, { useState } from "react";
-import {
-  TaskContainer,
-  TasksContent,
-  BigWrapper,
-  ButtonsWrapper,
-  TasksWrapper,
-  StyledData,
-} from "./List.styles";
+import { useEffect } from "react";
+import { ListWrapper } from "./List.styles";
+import { Task } from "../Task/Task";
+import { TaskEdit } from "../TaskEdit/TaskEdit";
 import { Footer } from "../Footer/Footer";
+import { Filter } from "../Filter/Filter";
 
 export const List = ({ todo, setTodo }) => {
   const [edit, setEdit] = useState(null);
   const [value, setValue] = useState(""); //для редактирования
   const [filter, setFilter] = useState(todo); //массив для фильтрации в котором по умолчанию лежат все таски
 
-  const handleSubmit = (e, id) => {
-    if (e.key === "Enter" && value) {
-      saveEditedTodo(id);
-    }
-  };
+  useEffect(() => {
+    setFilter(todo); //при изменении массива страница перерисовывается
+  }, [todo]); //только при изменении
 
   const filterTodo = (isActive) => {
     if (isActive === "all") {
@@ -60,52 +55,38 @@ export const List = ({ todo, setTodo }) => {
     setTodo(newTodo);
     setEdit(null); //выход из редактирования
   };
+
   return (
-    <BigWrapper>
-      <ButtonsWrapper>
-        <button onClick={() => filterTodo("all")}>all</button>
-        <button onClick={() => filterTodo(true)}>open</button>
-        <button onClick={() => filterTodo(false)}>closed</button>
-      </ButtonsWrapper>
+    <ListWrapper>
+      <Filter filterTodo={filterTodo} />
       {filter.map(
         (
           item //каждый элемент массива туду в переменной item
         ) => (
-          <TasksWrapper key={item.id}>
-            {edit === item.id ? ( //редактирование активно? (айди при клике на edit)
-              <TaskContainer status={item.isActive}>
-                <input
-                  value={value}
-                  onChange={(e) => setValue(e.target.value)}
-                  onKeyDown={(e) => handleSubmit(e, item.id)}
-                />
-              </TaskContainer>
+          <div key={item.id}>
+            {edit === item.id ? ( //режим редактирования активен?
+              <TaskEdit
+                id={item.id}
+                status={item.isActive}
+                saveEditedTodo={saveEditedTodo}
+                value={value}
+                setValue={setValue}
+              />
             ) : (
-              <TaskContainer status={item.isActive}>
-                <TasksContent>{item.content}</TasksContent>
-                <StyledData>Created on {item.date}</StyledData>
-              </TaskContainer>
+              <Task
+                status={item.isActive}
+                id={item.id}
+                content={item.content}
+                date={item.date}
+                deleteTodo={deleteTodo}
+                editTodo={editTodo}
+                statusTodo={statusTodo}
+              />
             )}
-            {
-              //сокрытие кнопок в режиме редактирования
-              edit === item.id ? (
-                <button onClick={() => saveEditedTodo(item.id)}>
-                  Save edit
-                </button>
-              ) : (
-                <ButtonsWrapper>
-                  <button onClick={() => deleteTodo(item.id)}>Delete</button>
-                  <button onClick={() => editTodo(item.id, item.content)}>
-                    Edit
-                  </button>
-                  <button onClick={() => statusTodo(item.id)}>Status</button>
-                </ButtonsWrapper>
-              )
-            }
-          </TasksWrapper>
+          </div>
         )
       )}
       <Footer amount={filter.length} />
-    </BigWrapper>
+    </ListWrapper>
   );
 };
